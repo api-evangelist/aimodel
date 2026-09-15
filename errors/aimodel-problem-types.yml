@@ -1,0 +1,65 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Live error responses captured from https://www.ai-model.jp/wp-json on 2026-09-14, cross-checked
+  against openapi/aimodel-content-api-openapi.yml
+format: wordpress-rest-error
+rfc9457: false
+note: >-
+  AI model publishes no error reference, because it publishes no documentation. Every entry below
+  was observed on a live anonymous request, not inferred. The surface returns the standard
+  WordPress REST error object as application/json with the message localised to Japanese; it does
+  not use application/problem+json.
+envelope:
+  content_type: application/json; charset=UTF-8
+  fields:
+  - name: code
+    type: string
+    description: Machine-readable error code.
+  - name: message
+    type: string
+    description: Human-readable message, returned in Japanese.
+  - name: data.status
+    type: integer
+    description: The HTTP status code, repeated in the body.
+  - name: data.params
+    type: object
+    description: Map of parameter name to failure message. Present on validation errors only.
+  - name: data.details
+    type: object
+    description: Map of parameter name to a nested {code, message, data} object. Present on validation errors only.
+problems:
+- code: rest_no_route
+  status: 404
+  title: No route was found matching the URL and request method.
+  observed: GET https://www.ai-model.jp/wp-json/wp/v2/nope
+  message_ja: URL とリクエストメソッドに一致するルートが見つかりませんでした。
+  remediation: >-
+    Check the route against the discovery document at https://www.ai-model.jp/wp-json/ - only the
+    routes captured in this repo's openapi/ documents are anonymously readable.
+- code: rest_invalid_param
+  status: 400
+  title: A query parameter failed validation.
+  observed: GET https://www.ai-model.jp/wp-json/wp/v2/models?per_page=999
+  message_ja: '無効なパラメータ: per_page'
+  detail_code: rest_out_of_bounds
+  remediation: Keep per_page between 1 and 100; read data.details for the per-parameter cause.
+- code: rest_post_invalid_page_number
+  status: 400
+  title: The requested page is past the end of the collection.
+  observed: GET https://www.ai-model.jp/wp-json/wp/v2/models?page=99
+  message_ja: リクエストされたページ数は存在するページ数を上回っています。
+  remediation: Read X-WP-TotalPages from the first page and stop at that value.
+- code: rest_post_invalid_id
+  status: 404
+  title: No record exists with that id.
+  observed: GET https://www.ai-model.jp/wp-json/wp/v2/models/999999
+  message_ja: 無効な投稿 ID です。
+  remediation: Take ids from the collection endpoint rather than guessing them.
+- code: rest_forbidden
+  status: 401
+  title: The route exists but requires an authenticated WordPress user.
+  observed: GET https://www.ai-model.jp/wp-json/wp/v2/settings
+  remediation: >-
+    Not obtainable - these are site administration routes. They are excluded from this repo's
+    OpenAPI documents on purpose.

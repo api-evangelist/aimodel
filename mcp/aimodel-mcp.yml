@@ -1,0 +1,55 @@
+generated: '2026-09-14'
+method: derived
+source: >-
+  openapi/aimodel-models-api-openapi.yml and openapi/aimodel-content-api-openapi.yml; searched for
+  a hosted or packaged MCP server on 2026-09-14 and found none
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+summary: >-
+  AI model ships no MCP server, hosted or local, and no endpoint was guessed or probed into
+  existence. The tools below are a CANDIDATE set derived from the read operations this repo
+  captured on the company's public WordPress REST API - what an MCP server over this surface would
+  expose if anyone built one. They are not offered by AI model and no agent can call them today.
+tools:
+- name: list_ai_models
+  description: List the AI-generated models and AI talent AI model publishes.
+  rest: listModels
+  method: GET
+  path: /wp/v2/models
+  auth: none
+- name: get_ai_model
+  description: Retrieve one AI model by its numeric id.
+  rest: getModel
+  method: GET
+  path: /wp/v2/models/{id}
+  auth: none
+- name: list_news
+  description: List AI model company news posts, newest first.
+  rest: listNews
+  method: GET
+  path: /wp/v2/news
+  auth: none
+- name: get_news
+  description: Retrieve one news post by id.
+  rest: getNews
+  method: GET
+  path: /wp/v2/news/{id}
+  auth: none
+- name: search_site
+  description: Search across AI model's public content.
+  rest: search
+  method: GET
+  path: /wp/v2/search
+  auth: none
+- name: list_media
+  description: List media library attachments, including AI model imagery.
+  rest: listMedia
+  method: GET
+  path: /wp/v2/media
+  auth: none

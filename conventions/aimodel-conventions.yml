@@ -1,0 +1,120 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Live requests against https://www.ai-model.jp/wp-json on 2026-09-14, cross-checked against the
+  route discovery document saved at openapi/aimodel-content-wp-routes-original.json
+summary: >-
+  One surface, one set of conventions: the standard WordPress REST API idiom (wp/v2), read-only in
+  public. Page-number pagination with X-WP-Total headers, sparse fields via _fields, embedding via
+  _embed, a WordPress error envelope rather than RFC 9457, and no idempotency, rate-limit or
+  request-id signalling at all. Every line below was observed on a live response; absences are
+  recorded as absences rather than assumed.
+surfaces:
+- key: content
+  name: AI model WordPress REST API
+  base_url: https://www.ai-model.jp/wp-json
+  openapi:
+  - openapi/aimodel-models-api-openapi.yml
+  - openapi/aimodel-content-api-openapi.yml
+  - openapi/aimodel-discovery-api-openapi.yml
+  style: WordPress REST API (wp/v2 namespace)
+authentication:
+  style: none for every published operation
+  anonymous_read: true
+  artifact: authentication/aimodel-authentication.yml
+versioning:
+  style: namespace-in-path
+  current: wp/v2
+  note: >-
+    The version is WordPress core's REST namespace, not an AI model product version. There is no
+    published versioning policy, no dated version header and no version negotiation.
+  artifact: lifecycle/aimodel-lifecycle.yml
+idempotency:
+  supported: false
+  coverage: none
+  applicability: na
+  scope: []
+  header: null
+  note: >-
+    No public write surface exists: every POST/PUT/PATCH/DELETE route on the host returns 401/403
+    anonymously, and no Idempotency-Key header is accepted or documented. `coverage: none` is the
+    literal fact; `applicability: na` records that there is nothing to make idempotent, which is a
+    different finding from a write API with no replay protection.
+reversibility:
+  grade: na
+  note: >-
+    The published surface is read-only, so there is no action to reverse. No cancel, refund, void,
+    undo or restore operation exists, and none is needed. Recorded as not applicable rather than
+    scored as a missing capability.
+  write_surfaces: []
+dry_run_mode:
+  supported: false
+  applicability: na
+  note: Read-only surface; nothing to rehearse.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    default: 1
+    note: 'Requesting a page past the last returns 400 rest_post_invalid_page_number (observed: GET /wp/v2/models?page=99).'
+  - name: per_page
+    default: 10
+    max: 100
+    note: 'Values outside 1-100 return 400 rest_invalid_param (observed: GET /wp/v2/models?per_page=999).'
+  - name: offset
+    note: Alternative to page; offsets the result set.
+  response_headers:
+  - name: X-WP-Total
+    description: Total number of matching records.
+  - name: X-WP-TotalPages
+    description: Total number of pages available.
+  - name: Link
+    description: RFC 8288 links, rel="next" and rel="prev".
+  verified: 'GET /wp/v2/models?per_page=2 returned X-WP-Total: 8, X-WP-TotalPages: 4 and a Link rel="next" header on 2026-09-14.'
+sparse_fields:
+  supported: true
+  param: _fields
+  example: /wp/v2/models?per_page=2&_fields=id,slug
+  verified: 'Returned [{"id":203,"slug":"asia-004"},{"id":198,"slug":"asia-003"}] on 2026-09-14.'
+expansion:
+  supported: true
+  param: _embed
+  note: Expands _links relations (author, attachments, terms) inline under _embedded.
+  verified: 'GET /wp/v2/news?per_page=2&_embed=1 returned HTTP 200 on 2026-09-14.'
+filtering:
+  supported: true
+  params:
+  - search
+  - slug
+  - include
+  - exclude
+  - after
+  - before
+  - modified_after
+  - modified_before
+  - order
+  - orderby
+metadata:
+  supported: false
+  note: Records carry a `meta` array and an `acf` field, both empty on the models type.
+request_id:
+  supported: false
+  note: No X-Request-Id, X-Correlation-Id or trace header is returned.
+rate_limit_signalling:
+  supported: false
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header was returned on any observed response, and
+    no limit is documented anywhere on the site.
+  artifact: rate-limits/aimodel-rate-limits.yml
+error_envelope:
+  format: wordpress-rest-error
+  rfc9457: false
+  content_type: application/json; charset=UTF-8
+  fields:
+  - code
+  - message
+  - data.status
+  - data.params
+  - data.details
+  language: Error messages are returned in Japanese, matching the site locale.
+  artifact: errors/aimodel-problem-types.yml

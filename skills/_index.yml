@@ -1,0 +1,28 @@
+generated: '2026-09-14'
+method: generated
+source: >-
+  openapi/aimodel-models-api-openapi.yml and openapi/aimodel-content-api-openapi.yml; AI model
+  publishes no skills, no AGENTS.md and no agent documentation (searched 2026-09-14)
+skills:
+- name: aimodel-browse-ai-model-roster
+  file: skills/aimodel-browse-ai-model-roster.md
+  api: aimodel:aimodel-models-api
+  operations:
+  - listModels
+  - getModel
+  - listMedia
+  summary: Browse and retrieve the published roster of AI-generated models and their imagery.
+- name: aimodel-track-company-news
+  file: skills/aimodel-track-company-news.md
+  api: aimodel:aimodel-content-api
+  operations:
+  - listNews
+  - getNews
+  - search
+  - listPages
+  summary: Poll AI model company news, search site content and read the site's pages.
+note: >-
+  Both skills are grounded in operationIds that exist in this repo's OpenAPI documents, which were
+  themselves derived from the live WordPress route discovery document. They describe a read-only
+  content surface; no skill exists for commissioning or generating an AI model, because no such
+  API exists.

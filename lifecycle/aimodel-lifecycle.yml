@@ -1,0 +1,39 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Site survey of https://www.ai-model.jp/ (page sitemap, 12 pages) and DNS probes of
+  status./trust./help./support..ai-model.jp on 2026-09-14
+summary: >-
+  There is no API lifecycle to publish because there is no API product. No versioning policy, no
+  deprecation policy, no Sunset/Deprecation headers, no SLA, no status page and no dated changelog
+  exist anywhere on the estate. The only version signal is WordPress core's wp/v2 REST namespace,
+  which AI model does not control.
+versioning:
+  policy_published: false
+  scheme: WordPress REST namespace in path (wp/v2)
+  note: Upstream WordPress core versioning, not a provider commitment.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: 'No operation in any captured document carries deprecated: true.'
+status_page:
+  published: false
+  probed:
+  - host: status.ai-model.jp
+    result: NXDOMAIN
+  note: No Atlassian Statuspage, no status subdomain, no incident history.
+sla:
+  published: false
+changelog:
+  published: false
+  nearest: https://www.ai-model.jp/news/
+  note: >-
+    The /news/ feed is company news (funding, campaigns, media appearances), not a product or API
+    changelog. 39 posts, most recent 2026-08-10 as observed on 2026-09-14. It is registered as
+    Blog/BlogRSS rather than ChangeLog because it records no product change.
+support:
+  channel: https://www.ai-model.jp/contact/
+  email: info@ai-model.jp
+  note: A single Contact Form 7 enquiry form. No developer support channel, community or forum.

@@ -1,0 +1,1868 @@
+openapi: 3.2.0
+info:
+  title: AI model Content API
+  version: wp/v2
+  summary: The public, read-only news, pages, media and recruitment content behind www.ai-model.jp.
+  description: 'AI model株式会社 publishes no developer portal, no API reference and no API product. Its corporate
+    site www.ai-model.jp runs on WordPress and serves the standard WordPress REST API anonymously at https://www.ai-model.jp/wp-json/.
+    That surface is a real, machine-readable, unauthenticated read API over AI model content. Write methods
+    (POST/PUT/PATCH/DELETE) and the administrative namespaces (settings, plugins, themes, block-types,
+    wp-abilities, ithemes-security, redirection, yoast, smart-cf-api, contact-form-7) are deliberately
+    excluded: they exist on the host but returned 401/403 anonymously and are not a public API. This is
+    a content API - it is NOT an AI image-generation or AI-model-rendering API, which AI model sells as
+    a managed creative service with no public programmatic interface. This document covers the anonymously
+    readable content collections: the "news" custom post type (39 records), "careerinfo" recruitment posts
+    (0 published), the "notification" announcements type (0 published), pages (12), the media library
+    (83 attachments), categories (1) and site-wide search (59 indexed objects). Counts are the X-WP-Total
+    values observed anonymously on 2026-09-14.'
+  contact:
+    name: AI model株式会社
+    url: https://www.ai-model.jp/contact/
+    email: info@ai-model.jp
+  x-provenance:
+    method: derived
+    source: https://www.ai-model.jp/wp-json/
+    derived: '2026-09-14'
+    note: Derived by API Evangelist from the live WordPress REST route discovery document served anonymously
+      at https://www.ai-model.jp/wp-json/ (saved verbatim as openapi/aimodel-content-wp-routes-original.json).
+      Every path, method, parameter and parameter schema comes from that document; every path was verified
+      to return HTTP 200 anonymously on 2026-09-14. Not published by AI model株式会社.
+servers:
+- url: https://www.ai-model.jp/wp-json
+  description: Production
+security:
+- {}
+tags:
+- name: News
+  description: AI model company news posts.
+- name: Careers
+  description: Recruitment / career information posts.
+- name: Notifications
+  description: Site announcements (お知らせ).
+- name: Pages
+  description: Static site pages.
+- name: Media
+  description: Images and files in the media library.
+- name: Taxonomy
+  description: Categories and tags applied to content.
+- name: Search
+  description: Site-wide search across public content.
+paths:
+  /wp/v2/news:
+    get:
+      operationId: listNews
+      summary: List news posts
+      description: 'List published AI model news posts. Returned HTTP 200 anonymously with X-WP-Total:
+        39 on 2026-09-14.'
+      tags:
+      - News
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_semantics
+        in: query
+        required: false
+        description: 検索入力を解釈する方法です。
+        schema:
+          type: string
+          enum:
+          - exact
+      - name: offset
+        in: query
+        required: false
+        description: 特定の項目数で結果をオフセットします。
+        schema:
+          type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      - name: orderby
+        in: query
+        required: false
+        description: 投稿の属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+      - name: search_columns
+        in: query
+        required: false
+        description: 検索する列名の配列。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - publish
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - any
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: &id001
+            X-WP-Total:
+              description: Total number of matching records.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/news/{id}:
+    get:
+      operationId: getNews
+      summary: Get one news post
+      description: Retrieve a single news post by its numeric WordPress post id.
+      tags:
+      - News
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: 投稿の一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: password
+        in: query
+        required: false
+        description: パスワードで保護されている場合の投稿のパスワード。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/careerinfo:
+    get:
+      operationId: listCareerInfo
+      summary: List recruitment posts
+      description: 'List published recruitment / career information posts. Returned HTTP 200 anonymously
+        with X-WP-Total: 0 on 2026-09-14 - the collection is registered and readable but currently empty.'
+      tags:
+      - Careers
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_semantics
+        in: query
+        required: false
+        description: 検索入力を解釈する方法です。
+        schema:
+          type: string
+          enum:
+          - exact
+      - name: offset
+        in: query
+        required: false
+        description: 特定の項目数で結果をオフセットします。
+        schema:
+          type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      - name: orderby
+        in: query
+        required: false
+        description: 投稿の属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+      - name: search_columns
+        in: query
+        required: false
+        description: 検索する列名の配列。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - publish
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - any
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: *id001
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/careerinfo/{id}:
+    get:
+      operationId: getCareerInfo
+      summary: Get one recruitment post
+      description: Retrieve a single recruitment post by its numeric WordPress post id.
+      tags:
+      - Careers
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: 投稿の一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: password
+        in: query
+        required: false
+        description: パスワードで保護されている場合の投稿のパスワード。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/notification:
+    get:
+      operationId: listNotifications
+      summary: List announcements
+      description: 'List published announcements. Returned HTTP 200 anonymously with X-WP-Total: 0 on
+        2026-09-14.'
+      tags:
+      - Notifications
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_semantics
+        in: query
+        required: false
+        description: 検索入力を解釈する方法です。
+        schema:
+          type: string
+          enum:
+          - exact
+      - name: offset
+        in: query
+        required: false
+        description: 特定の項目数で結果をオフセットします。
+        schema:
+          type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      - name: orderby
+        in: query
+        required: false
+        description: 投稿の属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+      - name: search_columns
+        in: query
+        required: false
+        description: 検索する列名の配列。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - publish
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - any
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: *id001
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/notification/{id}:
+    get:
+      operationId: getNotification
+      summary: Get one announcement
+      description: Retrieve a single announcement by its numeric WordPress post id.
+      tags:
+      - Notifications
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: 投稿の一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: password
+        in: query
+        required: false
+        description: パスワードで保護されている場合の投稿のパスワード。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/pages:
+    get:
+      operationId: listPages
+      summary: List pages
+      description: 'List published site pages. Returned HTTP 200 anonymously with X-WP-Total: 12 on 2026-09-14.'
+      tags:
+      - Pages
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: author
+        in: query
+        required: false
+        description: 特定の投稿者に割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: author_exclude
+        in: query
+        required: false
+        description: 特定の投稿者が割り当てられた投稿を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: menu_order
+        in: query
+        required: false
+        description: 特定の menu_order 値を持つ投稿に結果を限定します。
+        schema:
+          type: integer
+      - name: search_semantics
+        in: query
+        required: false
+        description: 検索入力を解釈する方法です。
+        schema:
+          type: string
+          enum:
+          - exact
+      - name: offset
+        in: query
+        required: false
+        description: 特定の項目数で結果をオフセットします。
+        schema:
+          type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      - name: orderby
+        in: query
+        required: false
+        description: 投稿の属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          - menu_order
+          default: date
+      - name: parent
+        in: query
+        required: false
+        description: 特定の親 ID に属する項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: parent_exclude
+        in: query
+        required: false
+        description: 特定の親 ID に属さない項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_columns
+        in: query
+        required: false
+        description: 検索する列名の配列。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - publish
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - any
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: *id001
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/pages/{id}:
+    get:
+      operationId: getPage
+      summary: Get one page
+      description: Retrieve a single page by its numeric WordPress post id.
+      tags:
+      - Pages
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: 投稿の一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: excerpt_length
+        in: query
+        required: false
+        description: デフォルトの抜粋の長さを上書きします。
+        schema:
+          type: integer
+      - name: password
+        in: query
+        required: false
+        description: パスワードで保護されている場合の投稿のパスワード。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/media:
+    get:
+      operationId: listMedia
+      summary: List media
+      description: 'List media library attachments. Returned HTTP 200 anonymously with X-WP-Total: 83
+        on 2026-09-14.'
+      tags:
+      - Media
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: author
+        in: query
+        required: false
+        description: 特定の投稿者に割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: author_exclude
+        in: query
+        required: false
+        description: 特定の投稿者が割り当てられた投稿を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_semantics
+        in: query
+        required: false
+        description: 検索入力を解釈する方法です。
+        schema:
+          type: string
+          enum:
+          - exact
+      - name: offset
+        in: query
+        required: false
+        description: 特定の項目数で結果をオフセットします。
+        schema:
+          type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      - name: orderby
+        in: query
+        required: false
+        description: 投稿の属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+      - name: parent
+        in: query
+        required: false
+        description: 特定の親 ID に属する項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: parent_exclude
+        in: query
+        required: false
+        description: 特定の親 ID に属さない項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_columns
+        in: query
+        required: false
+        description: 検索する列名の配列。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - inherit
+          items:
+            enum:
+            - inherit
+            - private
+            - trash
+            type: string
+      - name: media_type
+        in: query
+        required: false
+        description: 特定のメディアタイプの添付ファイルに結果セットを限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - null
+          items:
+            type: string
+            enum:
+            - image
+            - video
+            - text
+            - application
+            - audio
+      - name: mime_type
+        in: query
+        required: false
+        description: 特定の MIME タイプの添付ファイルに結果セットを限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - null
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: *id001
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/media/{id}:
+    get:
+      operationId: getMedia
+      summary: Get one media item
+      description: Retrieve a single media attachment by its numeric WordPress post id.
+      tags:
+      - Media
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: 投稿の一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/categories:
+    get:
+      operationId: listCategories
+      summary: List categories
+      description: 'List content categories. Returned HTTP 200 anonymously with X-WP-Total: 1 on 2026-09-14.'
+      tags:
+      - Taxonomy
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - name: orderby
+        in: query
+        required: false
+        description: タームの属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+          default: name
+      - name: hide_empty
+        in: query
+        required: false
+        description: どの投稿にも割り当てられていないタームを非表示にするかどうか。
+        schema:
+          type: boolean
+          default: false
+      - name: parent
+        in: query
+        required: false
+        description: 特定の親に割り当てられたタームに結果を限定します。
+        schema:
+          type: integer
+      - name: post
+        in: query
+        required: false
+        description: 特定の投稿に割り当てられたタームに結果を限定します。
+        schema:
+          type: integer
+          default: null
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つタームに結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: *id001
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/categories/{id}:
+    get:
+      operationId: getCategory
+      summary: Get one category
+      description: Retrieve a single category by its numeric term id.
+      tags:
+      - Taxonomy
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: タームの一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/search:
+    get:
+      operationId: search
+      summary: Search site content
+      description: 'Search across public content types. Returned HTTP 200 anonymously with X-WP-Total:
+        59 on 2026-09-14.'
+      tags:
+      - Search
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        description: オブジェクトタイプのアイテムの結果を制限します。
+        schema:
+          type: string
+          enum:
+          - post
+          - term
+          - post-format
+          default: post
+      - name: subtype
+        in: query
+        required: false
+        description: 1つ以上のオブジェクトサブタイプのアイテムの結果を制限します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - any
+          items:
+            enum:
+            - post
+            - page
+            - notification
+            - news
+            - models
+            - careerinfo
+            - category
+            - post_tag
+            - any
+            type: string
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers: *id001
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+      description: WordPress REST API error envelope.

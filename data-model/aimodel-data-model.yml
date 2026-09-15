@@ -1,0 +1,98 @@
+generated: '2026-09-14'
+method: derived
+source: >-
+  openapi/aimodel-models-api-openapi.yml, openapi/aimodel-content-api-openapi.yml and the live
+  records returned by https://www.ai-model.jp/wp-json/wp/v2/* on 2026-09-14
+summary: >-
+  A WordPress content graph. Four custom post types (models, news, careerinfo, notification) sit
+  alongside core pages, media and categories. The distinctive entity is `model` - one published
+  AI-generated model - whose category is encoded only in class_list, because the models-cat
+  taxonomy behind /models/<slug>/ is registered in WordPress but NOT exposed on the REST API.
+entities:
+- name: model
+  rest_base: models
+  label: モデル
+  description: One published AI-generated model or AI talent.
+  count_observed: 8
+  identifier: id (integer WordPress post id)
+  fields:
+  - id
+  - date
+  - date_gmt
+  - guid.rendered
+  - modified
+  - modified_gmt
+  - slug
+  - status
+  - type
+  - link
+  - title.rendered
+  - template
+  - meta
+  - class_list
+  - acf
+  - _links
+  note: >-
+    class_list carries the models-cat term as a CSS class (observed: models-cat-asia on
+    /models/asia-004/). acf and meta were empty on every record returned anonymously.
+- name: news
+  rest_base: news
+  label: ニュース
+  description: Company news and press posts.
+  count_observed: 39
+  identifier: id
+- name: careerinfo
+  rest_base: careerinfo
+  label: 採用
+  description: Recruitment / career information posts.
+  count_observed: 0
+  note: Registered and readable, but no records are published.
+- name: notification
+  rest_base: notification
+  label: お知らせ
+  description: Site announcements.
+  count_observed: 0
+- name: page
+  rest_base: pages
+  label: 固定ページ
+  description: Static site pages, including the landing pages and contact/careers flows.
+  count_observed: 12
+- name: media
+  rest_base: media
+  label: メディア
+  description: Images and files in the media library, including AI model imagery.
+  count_observed: 83
+- name: category
+  rest_base: categories
+  label: カテゴリー
+  description: Categories applied to core posts.
+  count_observed: 1
+relationships:
+- from: model
+  to: media
+  kind: has_many
+  via: _links["wp:attachment"]
+  note: Attachments belonging to the model post.
+- from: news
+  to: media
+  kind: has_many
+  via: _links["wp:featuredmedia"] / _links["wp:attachment"]
+- from: news
+  to: user
+  kind: belongs_to
+  via: _links.author
+- from: page
+  to: page
+  kind: has_one
+  via: parent
+- from: post
+  to: category
+  kind: has_many
+  via: _links["wp:term"]
+gaps:
+- entity: models-cat
+  issue: >-
+    The taxonomy that groups models (ASIA, and the other terms used at /models/) has
+    show_in_rest disabled, so /wp/v2/taxonomies does not list it and there is no
+    /wp/v2/models-cat collection. A consumer can only recover the term by parsing class_list.
+  fix_owner: provider

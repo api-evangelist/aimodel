@@ -1,0 +1,12 @@
+generated: '2026-09-14'
+method: searched
+source: https://www.ai-model.jp/
+plan_count: 0
+plans: []
+pricing_url: null
+note: >-
+  AI model publishes no pricing of any kind. The whole site is 12 pages - home, contact, careers
+  and four landing pages - and none carries a price, a tier, a quota or a "contact sales" pricing
+  table. /pricing/ and /price/ both return 404 (probed 2026-09-14). The company sells AI model
+  generation as a quoted creative engagement through the enquiry form at
+  https://www.ai-model.jp/contact/, so there is no plan structure to record.

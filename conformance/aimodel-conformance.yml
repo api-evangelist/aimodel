@@ -1,0 +1,63 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Live probes of https://www.ai-model.jp/wp-json on 2026-09-14 plus the two policy PDFs AI model
+  links from its homepage
+summary: >-
+  Nothing on this estate claims a standard. The one machine-readable surface follows the WordPress
+  REST idiom, which is a de facto convention rather than a registered standard, and the company's
+  published PDFs are an AI ethics statement and an information security basic policy - neither
+  names a certification, an auditor or a scheme. Recorded as honest negatives; no domain standard
+  exists for AI-generated model licensing to conform to.
+conformance:
+- id: pagination
+  conforms: true
+  evidence: >-
+    Page-number pagination with X-WP-Total / X-WP-TotalPages and RFC 8288 Link rel="next" headers,
+    observed on GET https://www.ai-model.jp/wp-json/wp/v2/models?per_page=2 (2026-09-14).
+- id: rfc8288
+  conforms: true
+  evidence: 'Link: <...?page=2>; rel="next" returned on paginated collections (2026-09-14).'
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors return the WordPress envelope {code, message, data.status} as application/json, not
+    application/problem+json. Observed on GET /wp/v2/nope -> 404 rest_no_route.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme, no authorization server metadata; /.well-known/oauth-authorization-server returned 404 on www.ai-model.jp and ai-model.jp (2026-09-14).
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on both hosts (2026-09-14).
+- id: idempotency
+  conforms: false
+  evidence: No Idempotency-Key header accepted or documented; no public write surface exists.
+- id: json-api
+  conforms: false
+  evidence: Plain JSON documents; no JSON:API media type or document structure.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No provider-published OpenAPI. The three documents in openapi/ are API Evangelist derivations
+    of the live route discovery document, and say so in info.x-provenance.
+domain_standards:
+  applicable: false
+  note: >-
+    AI-generated model and AI talent licensing for apparel e-commerce has no machine-readable
+    domain standard (no SCIM/OData/OpenRTB/HL7-class schema applies). Reward-only check left empty
+    rather than filled with an invented conformance.
+certifications:
+  published: []
+  note: >-
+    The information security basic policy PDF (2023-07-03, signed by CEO 谷口大季) describes an
+    ISMS-style management system in prose - objectives, reviews, delegated management
+    responsibility - but names no ISO 27001, SOC 2, PCI, HIPAA or Privacy Mark certification and
+    no certifying body. Not recorded as a certification.
+  evidence: https://www.ai-model.jp/wp/wp-content/themes/aimodel/pdfs/security_policy.pdf
+ai_policy:
+  published: true
+  url: https://www.ai-model.jp/wp/wp-content/themes/aimodel/pdfs/ai-model_policy.pdf
+  note: >-
+    A responsible-AI statement organised around human-centricity, fairness, transparency and
+    accountability, safety, privacy and security, and AI literacy. A commitment, not a
+    conformance claim against a named framework.

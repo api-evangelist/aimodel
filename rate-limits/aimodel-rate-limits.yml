@@ -1,0 +1,15 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Response headers observed on live anonymous requests to https://www.ai-model.jp/wp-json on
+  2026-09-14; no documentation exists to search
+limit_count: 0
+rate_limits: []
+response_headers: []
+exhaustion_status: null
+note: >-
+  AI model documents no rate limits, because it documents nothing: there is no developer portal
+  and no API reference. No X-RateLimit-*, RateLimit-* or Retry-After header appeared on any of the
+  fifteen anonymous requests made while profiling this surface, and no 429 was observed. Any
+  throttling that exists is whatever the WordPress host and its edge apply silently. An honest
+  zero, not an unchecked field.

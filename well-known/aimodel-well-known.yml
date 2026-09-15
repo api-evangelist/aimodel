@@ -1,0 +1,75 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Direct HTTP probes of the named /.well-known/ paths on every host this record knows, 2026-09-14
+summary: >-
+  Nothing is served. Every named path returned 404 on both hosts, and each 404 body is the site's
+  Japanese HTML 404 page rather than a document. No WellKnown, SecurityTxt or AgentCard pointer is
+  emitted, because there is nothing for one to point at - this file records a verified absence.
+hosts:
+- host: www.ai-model.jp
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: ai-model.jp
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+other_probes:
+- url: https://www.ai-model.jp/llms.txt
+  status: 404
+- url: https://www.ai-model.jp/openapi.json
+  status: 404
+- url: https://www.ai-model.jp/openapi.yaml
+  status: 404
+- url: https://www.ai-model.jp/swagger.json
+  status: 404
+- url: https://www.ai-model.jp/api-docs
+  status: 404
+- url: https://www.ai-model.jp/wp-json/
+  status: 200
+  note: The WordPress route discovery document - the only machine-readable index on the estate.

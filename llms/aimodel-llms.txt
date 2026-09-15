@@ -1,0 +1,71 @@
+# AI model (AI model株式会社)
+
+> Tokyo generative-AI company that creates and licenses photorealistic AI models and AI talent for
+> apparel, e-commerce and advertising imagery - product shots, key visuals, lookbooks, TV
+> commercials, outdoor advertising and in-store POP. Founded August 2020, headquartered in
+> Toranomon, Minato-ku. AI model sells a managed creative service, not software.
+
+Generated: 2026-09-14
+Method: generated
+Source: apis.yml and the artifacts in this repository, all derived from public probes of
+https://www.ai-model.jp/ on 2026-09-14. AI model does not publish an llms.txt of its own
+(https://www.ai-model.jp/llms.txt returns 404).
+
+## What is and is not available programmatically
+
+AI model publishes NO developer portal, NO API reference, NO pricing, NO SDKs and NO terms of
+service. There is no AI image-generation API, no model-rendering API and no way to commission an
+AI model programmatically - that work is quoted through the enquiry form. api., docs., developer.,
+developers. and app. under ai-model.jp do not resolve.
+
+The one public, anonymous, machine-readable surface on the estate is the standard WordPress REST
+API behind the corporate site, at https://www.ai-model.jp/wp-json. It is read-only in public: all
+write and administrative routes return 401/403 without credentials.
+
+## APIs (captured by API Evangelist, not published by AI model)
+
+- [AI model Models API](https://www.ai-model.jp/wp-json/wp/v2/models): the published roster of AI
+  models and AI talent (8 records on 2026-09-14). OpenAPI: openapi/aimodel-models-api-openapi.yml
+- [AI model Content API](https://www.ai-model.jp/wp-json/wp/v2/news): company news (39), pages
+  (12), media (83), categories, recruitment posts, announcements and site search (59 objects).
+  OpenAPI: openapi/aimodel-content-api-openapi.yml
+- [AI model Discovery API](https://www.ai-model.jp/wp-json/): registered content types, taxonomies
+  and post statuses. OpenAPI: openapi/aimodel-discovery-api-openapi.yml
+
+## Conventions
+
+- Authentication: none. Every published operation is anonymous read.
+- Pagination: page / per_page (max 100) / offset, with X-WP-Total, X-WP-TotalPages and RFC 8288
+  Link rel="next" response headers.
+- Sparse fields: _fields=id,slug. Embedding: _embed=1.
+- Errors: WordPress envelope {code, message, data.status} as application/json, messages in
+  Japanese. Not RFC 9457.
+- Rate limits: none documented, none signalled in any response header.
+- Idempotency, reversibility, dry-run: not applicable - there is no public write surface.
+
+## Repository artifacts
+
+- openapi/aimodel-content-wp-routes-original.json - the live route discovery document, verbatim
+- authentication/aimodel-authentication.yml
+- conventions/aimodel-conventions.yml
+- errors/aimodel-problem-types.yml
+- data-model/aimodel-data-model.yml
+- lifecycle/aimodel-lifecycle.yml
+- conformance/aimodel-conformance.yml
+- security/aimodel-domain-security.yml
+- rate-limits/aimodel-rate-limits.yml
+- plans/aimodel-plans-pricing.yml
+- packages/aimodel-packages.yml
+- mcp/aimodel-mcp.yml (candidate tool list - no MCP server exists)
+- well-known/aimodel-well-known.yml (every named path 404s)
+- skills/ - agent skills grounded in the captured operationIds
+
+## Company links
+
+- Website: https://www.ai-model.jp/
+- News: https://www.ai-model.jp/news/ (RSS: https://www.ai-model.jp/feed/)
+- Models: https://www.ai-model.jp/models/
+- Contact: https://www.ai-model.jp/contact/ (info@ai-model.jp)
+- Careers: https://www.ai-model.jp/careers_top/
+- AI policy (PDF): https://www.ai-model.jp/wp/wp-content/themes/aimodel/pdfs/ai-model_policy.pdf
+- Information security basic policy (PDF): https://www.ai-model.jp/wp/wp-content/themes/aimodel/pdfs/security_policy.pdf

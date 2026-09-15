@@ -1,0 +1,34 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for AI model Models API
+  version: 1.0.0
+extends: openapi/aimodel-models-api-openapi.yml
+x-provenance:
+  generated: '2026-09-14'
+  method: derived
+  source: openapi/aimodel-models-api-openapi.yml
+actions:
+- target: $.info
+  description: Record that this document is an API Evangelist derivation of the live WordPress route discovery
+    document, not a contract published by AI model株式会社.
+  update:
+    x-apievangelist:
+      derived_by: API Evangelist
+      derived_from: https://www.ai-model.jp/wp-json/
+      derived: '2026-09-14'
+      provider_published: false
+- target: $.info
+  description: Record the operating posture of the company behind this surface.
+  update:
+    x-provider-posture:
+      developer_portal: false
+      api_reference: false
+      pricing: false
+      sdks: false
+      terms_of_service: false
+      surface: WordPress REST API on the corporate marketing site
+      product_api: none published
+- target: $.paths.*.get
+  description: Mark every captured operation as anonymously readable and verified live.
+  update:
+    x-anonymous-read: true

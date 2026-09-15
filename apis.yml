@@ -1,18 +1,93 @@
 aid: aimodel
-name: Aimodel
-description: 'Aimodel is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+name: AI model
+description: >-
+  AI model株式会社 (AI model Inc.) is a Tokyo generative-AI company, founded in August 2020 and
+  headquartered in the Sumitomo Fudosan Toranomon Tower, Minato-ku, that generates and licenses
+  photorealistic AI models and AI talent for apparel, e-commerce and advertising imagery. Its
+  service replaces conventional model photography for product shots (ささげ), key visuals,
+  lookbooks, television commercials, outdoor advertising and in-store POP, and it co-developed the
+  AI character MirAI with Canon Marketing Japan. Its November 2024 Series A was backed by SBI
+  Investment, NTT Docomo Ventures, the Canon Marketing Japan MIRAI Fund with Global Brain,
+  Mitsukoshi Isetan Innovations, Sazaby League and Mitsubishi UFJ Capital; EquityZen reports a
+  pre-Series B round with SBI Investment and Canon MJ CVC as of January 2026. AI model sells a
+  managed creative service, not software: it publishes no developer portal, no API reference, no
+  pricing page, no SDKs and no terms of service, and api., docs., developer., developers. and app.
+  under ai-model.jp do not resolve. The one public, anonymous, machine-readable surface on its
+  estate is the WordPress REST API behind www.ai-model.jp, which serves its published AI model
+  roster (8 records), company news (39), pages, the media library and site-wide search - captured
+  here as three derived OpenAPI documents.
 url: https://raw.githubusercontent.com/api-evangelist/aimodel/refs/heads/main/apis.yml
+image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-14'
 modified: '2026-09-14'
+position: Producing
 tags:
-- Company
-apis: []
+- Artificial Intelligence
+- Generative AI
+- Japan
+- E-commerce
+- Fashion
+- Apparel
+- Advertising
+- Marketing
+- Content
+- Digital Human
+- Media
+- WordPress
+apis:
+- aid: aimodel:aimodel-models-api
+  name: AI model Models API
+  description: >-
+    The published roster of AI-generated models and AI talent that AI model markets to apparel and
+    e-commerce clients, served anonymously as the "models" custom post type on the WordPress REST
+    API behind www.ai-model.jp. 8 records on 2026-09-14.
+  image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-models-api-openapi.yml
+  - type: Overlay
+    url: overlays/aimodel-models-api-overlay.yaml
+- aid: aimodel:aimodel-content-api
+  name: AI model Content API
+  description: >-
+    Company news, recruitment posts, announcements, pages, the media library, categories and
+    site-wide search, served anonymously by the WordPress REST API behind www.ai-model.jp.
+  image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
+  humanURL: https://www.ai-model.jp/news/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - News
+  - Content
+  - Media
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-content-api-openapi.yml
+  - type: Overlay
+    url: overlays/aimodel-content-api-overlay.yaml
+- aid: aimodel:aimodel-discovery-api
+  name: AI model Discovery API
+  description: >-
+    Self-describing metadata for the public www.ai-model.jp WordPress REST API - registered content
+    types, taxonomies and post statuses - and the route discovery document this profile was derived
+    from.
+  image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
+  humanURL: https://www.ai-model.jp/wp-json/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-discovery-api-openapi.yml
+  - type: Overlay
+    url: overlays/aimodel-discovery-api-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +95,47 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://equityzen.com/company/aimodel
+  url: https://www.ai-model.jp/
+- type: Blog
+  url: https://www.ai-model.jp/news/
+- type: BlogRSS
+  url: https://www.ai-model.jp/feed/
+- type: Support
+  url: https://www.ai-model.jp/contact/
+- type: AIPolicy
+  url: https://www.ai-model.jp/wp/wp-content/themes/aimodel/pdfs/ai-model_policy.pdf
+- type: InformationSecurityPolicy
+  url: https://www.ai-model.jp/wp/wp-content/themes/aimodel/pdfs/security_policy.pdf
+- type: SecondaryMarket
+  url: https://equityzen.com/company/aimodel/
+- type: Authentication
+  url: authentication/aimodel-authentication.yml
+- type: Conventions
+  url: conventions/aimodel-conventions.yml
+- type: ErrorCatalog
+  url: errors/aimodel-problem-types.yml
+- type: DataModel
+  url: data-model/aimodel-data-model.yml
+- type: Lifecycle
+  url: lifecycle/aimodel-lifecycle.yml
+- type: Conformance
+  url: conformance/aimodel-conformance.yml
+- type: DomainSecurity
+  url: security/aimodel-domain-security.yml
+- type: RateLimits
+  url: rate-limits/aimodel-rate-limits.yml
+- type: Plans
+  url: plans/aimodel-plans-pricing.yml
+- type: Packages
+  url: packages/aimodel-packages.yml
+- type: X-MCPServerCandidate
+  url: mcp/aimodel-mcp.yml
+- type: LLMsTxt
+  url: llms/aimodel-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-09-14'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v3

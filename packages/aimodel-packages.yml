@@ -1,0 +1,13 @@
+generated: '2026-09-14'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org, crates.io, packagist.org, api.nuget.org and
+  api.github.com searched for AI model株式会社 client libraries on 2026-09-14
+package_count: 0
+packages: []
+note: >-
+  No first-party SDK, client library or package exists on any registry. AI model ships no API, so
+  there is nothing to wrap. github.com/aimodel and github.com/ai-model both resolve, but each is
+  an unrelated individual user account, not this company's organisation - no corporate GitHub
+  organisation was found. No SDKs pointer is emitted, because emitting one would credit the
+  company with libraries it does not publish.

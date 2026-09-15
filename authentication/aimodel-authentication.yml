@@ -1,0 +1,46 @@
+generated: '2026-09-14'
+method: probed
+source: >-
+  Live probes of https://www.ai-model.jp/wp-json/ and its routes on 2026-09-14, plus the
+  `authentication` block of the WordPress route discovery document saved verbatim at
+  openapi/aimodel-content-wp-routes-original.json
+summary: >-
+  AI model株式会社 publishes no developer program, so there is no API key, no OAuth client
+  registration and no documented authentication of any kind. Every operation captured in this repo
+  is anonymous read. The only credential scheme the host advertises is WordPress Application
+  Passwords, which is site administration for the marketing site - not a developer credential -
+  and it gates the write and administrative routes this profile deliberately excludes.
+surfaces:
+- key: content
+  name: AI model WordPress REST API
+  base_url: https://www.ai-model.jp/wp-json
+  security_schemes: []
+  anonymous_read: true
+  verified: 'GET /wp/v2/models, /wp/v2/news, /wp/v2/pages, /wp/v2/media, /wp/v2/categories, /wp/v2/search, /wp/v2/types, /wp/v2/taxonomies and /wp/v2/statuses each returned HTTP 200 with no credentials on 2026-09-14.'
+gated_routes:
+- path: /wp/v2/settings
+  status: 401
+  note: Site settings; requires an authenticated administrator.
+- path: /wp-abilities/v1/abilities
+  status: 401
+  note: WordPress Abilities API - registered, but not readable anonymously.
+- path: /smart-cf-api/v2/search/posts
+  status: 401
+- path: /wp/v2/block-types
+  status: 401
+- path: /contact-form-7/v1/contact-forms
+  status: 403
+  note: Contact Form 7 form definitions; the public contact form itself posts through the site UI.
+application_passwords:
+  advertised: true
+  authorization_endpoint: https://www.ai-model.jp/wp/wp-admin/authorize-application.php
+  transport: HTTP Basic
+  note: >-
+    Advertised in the discovery document's `authentication` block. These are WordPress site
+    administration credentials issued to site editors, not an API program open to third parties.
+oauth2: false
+openid_connect: false
+api_keys: false
+mutual_tls: false
+docs: null
+docs_note: No authentication documentation exists because no developer documentation exists.

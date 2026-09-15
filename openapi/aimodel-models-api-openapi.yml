@@ -1,0 +1,338 @@
+openapi: 3.2.0
+info:
+  title: AI model Models API
+  version: wp/v2
+  summary: The public, read-only roster of AI model's generated AI models and AI talent, served by the
+    WordPress REST API behind www.ai-model.jp.
+  description: 'AI model株式会社 publishes no developer portal, no API reference and no API product. Its corporate
+    site www.ai-model.jp runs on WordPress and serves the standard WordPress REST API anonymously at https://www.ai-model.jp/wp-json/.
+    That surface is a real, machine-readable, unauthenticated read API over AI model content. Write methods
+    (POST/PUT/PATCH/DELETE) and the administrative namespaces (settings, plugins, themes, block-types,
+    wp-abilities, ithemes-security, redirection, yoast, smart-cf-api, contact-form-7) are deliberately
+    excluded: they exist on the host but returned 401/403 anonymously and are not a public API. This is
+    a content API - it is NOT an AI image-generation or AI-model-rendering API, which AI model sells as
+    a managed creative service with no public programmatic interface. This document covers the "models"
+    custom post type (rest_base "models", label モデル) - the published roster of AI-generated models and
+    AI talent AI model markets to apparel and e-commerce clients. 8 records were returned anonymously
+    on 2026-09-14 (X-WP-Total: 8). Records carry id, slug, title, link, dates and a class_list that encodes
+    the models-cat term (e.g. models-cat-asia); the models-cat taxonomy itself is not registered in the
+    REST API, so the term is only readable from class_list.'
+  contact:
+    name: AI model株式会社
+    url: https://www.ai-model.jp/contact/
+    email: info@ai-model.jp
+  x-provenance:
+    method: derived
+    source: https://www.ai-model.jp/wp-json/
+    derived: '2026-09-14'
+    note: Derived by API Evangelist from the live WordPress REST route discovery document served anonymously
+      at https://www.ai-model.jp/wp-json/ (saved verbatim as openapi/aimodel-content-wp-routes-original.json).
+      Every path, method, parameter and parameter schema comes from that document; every path was verified
+      to return HTTP 200 anonymously on 2026-09-14. Not published by AI model株式会社.
+servers:
+- url: https://www.ai-model.jp/wp-json
+  description: Production
+security:
+- {}
+tags:
+- name: Models
+  description: AI-generated models and AI talent published on www.ai-model.jp.
+paths:
+  /wp/v2/models:
+    get:
+      operationId: listModels
+      summary: List AI models
+      description: 'List the published AI models / AI talent. Returned HTTP 200 anonymously with X-WP-Total:
+        8 on 2026-09-14.'
+      tags:
+      - Models
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: page
+        in: query
+        required: false
+        description: コレクションの現在のページ。
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        required: false
+        description: 結果として返される項目の最大数。
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: search
+        in: query
+        required: false
+        description: 文字列に一致するものに結果を限定します。
+        schema:
+          type: string
+      - name: after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        required: false
+        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
+        schema:
+          type: string
+          format: date-time
+      - name: exclude
+        in: query
+        required: false
+        description: 特定の ID を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: include
+        in: query
+        required: false
+        description: 特定の ID に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: search_semantics
+        in: query
+        required: false
+        description: 検索入力を解釈する方法です。
+        schema:
+          type: string
+          enum:
+          - exact
+      - name: offset
+        in: query
+        required: false
+        description: 特定の項目数で結果をオフセットします。
+        schema:
+          type: integer
+      - name: order
+        in: query
+        required: false
+        description: 属性で昇順または降順に並べ替えます。
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      - name: orderby
+        in: query
+        required: false
+        description: 投稿の属性でコレクションを並べ替えます。
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+      - name: search_columns
+        in: query
+        required: false
+        description: 検索する列名の配列。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+      - name: slug
+        in: query
+        required: false
+        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - publish
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - any
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+          headers:
+            X-WP-Total:
+              description: Total number of matching records.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /wp/v2/models/{id}:
+    get:
+      operationId: getModel
+      summary: Get one AI model
+      description: Retrieve a single AI model by its numeric WordPress post id.
+      tags:
+      - Models
+      security:
+      - {}
+      x-verified:
+        checked: '2026-09-14'
+        http_status: 200
+        authentication: none
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: 投稿の一意識別子。
+      - name: context
+        in: query
+        required: false
+        description: このリクエストが作成されたスコープ。レスポンスに含まれるフィールドはスコープにより異なります。
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: password
+        in: query
+        required: false
+        description: パスワードで保護されている場合の投稿のパスワード。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+      description: WordPress REST API error envelope.

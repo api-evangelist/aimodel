@@ -1,0 +1,15 @@
+generated: '2026-09-14'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.ai-model.jp
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 28 14:59:59 2026 GMT
+  hsts: false
+domains:
+- domain: ai-model.jp
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false

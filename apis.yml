@@ -28,6 +28,19 @@ tags:
 - Artificial Intelligence
 - Generative AI
 - Japan
+- E-Commerce
+- Fashion
+- Apparel
+- Advertising
+- Marketing
+- Content
+- Digital Human
+- Media
+- WordPress
+tags_raw:
+- Artificial Intelligence
+- Generative AI
+- Japan
 - E-commerce
 - Fashion
 - Apparel
@@ -41,9 +54,9 @@ apis:
 - aid: aimodel:aimodel-models-api
   name: AI model Models API
   description: >-
-    The published roster of AI-generated models and AI talent that AI model markets to apparel and
-    e-commerce clients, served anonymously as the "models" custom post type on the WordPress REST
-    API behind www.ai-model.jp. 8 records on 2026-09-14.
+    The published roster of AI-generated models and AI talent that AI model markets to apparel and e-commerce
+    clients, served anonymously as the "models" custom post type on the WordPress REST API behind www.ai-model.jp.
+    8 records on 2026-09-14.
   image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
   humanURL: https://www.ai-model.jp/models/
   baseURL: https://www.ai-model.jp/wp-json
@@ -54,30 +67,11 @@ apis:
     url: openapi/aimodel-models-api-openapi.yml
   - type: Overlay
     url: overlays/aimodel-models-api-overlay.yaml
-- aid: aimodel:aimodel-content-api
-  name: AI model Content API
-  description: >-
-    Company news, recruitment posts, announcements, pages, the media library, categories and
-    site-wide search, served anonymously by the WordPress REST API behind www.ai-model.jp.
-  image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
-  humanURL: https://www.ai-model.jp/news/
-  baseURL: https://www.ai-model.jp/wp-json
-  tags:
-  - News
-  - Content
-  - Media
-  - Search
-  properties:
-  - type: OpenAPI
-    url: openapi/aimodel-content-api-openapi.yml
-  - type: Overlay
-    url: overlays/aimodel-content-api-overlay.yaml
 - aid: aimodel:aimodel-discovery-api
   name: AI model Discovery API
   description: >-
-    Self-describing metadata for the public www.ai-model.jp WordPress REST API - registered content
-    types, taxonomies and post statuses - and the route discovery document this profile was derived
-    from.
+    Self-describing metadata for the public www.ai-model.jp WordPress REST API - registered content types,
+    taxonomies and post statuses - and the route discovery document this profile was derived from.
   image: https://www.ai-model.jp/wp/wp-content/uploads/2022/03/MV.jpg
   humanURL: https://www.ai-model.jp/wp-json/
   baseURL: https://www.ai-model.jp/wp-json
@@ -88,12 +82,84 @@ apis:
     url: openapi/aimodel-discovery-api-openapi.yml
   - type: Overlay
     url: overlays/aimodel-discovery-api-overlay.yaml
+- aid: aimodel:aimodel-careers-api
+  name: AI model Careers API
+  description: Recruitment / career information posts.
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Careers
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-careers-api-openapi.yml
+- aid: aimodel:aimodel-media-api
+  name: AI model Media API
+  description: Images and files in the media library.
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Media
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-media-api-openapi.yml
+- aid: aimodel:aimodel-news-api
+  name: AI model News API
+  description: AI model company news posts.
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - News
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-news-api-openapi.yml
+- aid: aimodel:aimodel-notifications-api
+  name: AI model Notifications API
+  description: Site announcements (お知らせ).
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-notifications-api-openapi.yml
+- aid: aimodel:aimodel-pages-api
+  name: AI model Pages API
+  description: Static site pages.
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Pages
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-pages-api-openapi.yml
+- aid: aimodel:aimodel-search-api
+  name: AI model Search API
+  description: Site-wide search across public content.
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-search-api-openapi.yml
+- aid: aimodel:aimodel-taxonomy-api
+  name: AI model Taxonomy API
+  description: Categories and tags applied to content.
+  humanURL: https://www.ai-model.jp/models/
+  baseURL: https://www.ai-model.jp/wp-json
+  tags:
+  - Taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/aimodel-taxonomy-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/aimodel-content-api-overlay.yaml
 - type: Website
   url: https://www.ai-model.jp/
 - type: Blog

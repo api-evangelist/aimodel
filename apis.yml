@@ -118,6 +118,8 @@ apis:
   humanURL: https://www.ai-model.jp/models/
   baseURL: https://www.ai-model.jp/wp-json
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI

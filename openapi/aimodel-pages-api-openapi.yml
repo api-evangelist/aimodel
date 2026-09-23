@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: AI model Models API
+  title: AI model Content Pages API
   version: wp/v2
-  summary: The public, read-only roster of AI model's generated AI models and AI talent, served by the WordPress REST API behind www.ai-model.jp.
+  summary: The public, read-only news, pages, media and recruitment content behind www.ai-model.jp.
   description: AI model株式会社 publishes no developer portal, no API reference and no API product.
   contact:
     name: AI model株式会社
@@ -19,16 +19,16 @@ servers:
 security:
 - {}
 tags:
-- name: Models
-  description: AI-generated models and AI talent published on www.ai-model.jp.
+- name: Pages
+  description: Static site pages.
 paths:
-  /wp/v2/models:
+  /wp/v2/pages:
     get:
-      operationId: listModels
-      summary: List AI models
-      description: 'List the published AI models / AI talent. Returned HTTP 200 anonymously with X-WP-Total: 8 on 2026-09-14.'
+      operationId: listPages
+      summary: List pages
+      description: 'List published site pages. Returned HTTP 200 anonymously with X-WP-Total: 12 on 2026-09-14.'
       tags:
-      - Models
+      - Pages
       security:
       - {}
       x-verified:
@@ -84,6 +84,28 @@ paths:
         schema:
           type: string
           format: date-time
+      - name: author
+        in: query
+        required: false
+        description: 特定の投稿者に割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: author_exclude
+        in: query
+        required: false
+        description: 特定の投稿者が割り当てられた投稿を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
       - name: before
         in: query
         required: false
@@ -120,6 +142,12 @@ paths:
           default: []
           items:
             type: integer
+      - name: menu_order
+        in: query
+        required: false
+        description: 特定の menu_order 値を持つ投稿に結果を限定します。
+        schema:
+          type: integer
       - name: search_semantics
         in: query
         required: false
@@ -161,7 +189,30 @@ paths:
           - slug
           - include_slugs
           - title
+          - menu_order
           default: date
+      - name: parent
+        in: query
+        required: false
+        description: 特定の親 ID に属する項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: parent_exclude
+        in: query
+        required: false
+        description: 特定の親 ID に属さない項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
       - name: search_columns
         in: query
         required: false
@@ -248,13 +299,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /wp/v2/models/{id}:
+  /wp/v2/pages/{id}:
     get:
-      operationId: getModel
-      summary: Get one AI model
-      description: Retrieve a single AI model by its numeric WordPress post id.
+      operationId: getPage
+      summary: Get one page
+      description: Retrieve a single page by its numeric WordPress post id.
       tags:
-      - Models
+      - Pages
       security:
       - {}
       x-verified:
@@ -279,6 +330,12 @@ paths:
           - embed
           - edit
           default: view
+      - name: excerpt_length
+        in: query
+        required: false
+        description: デフォルトの抜粋の長さを上書きします。
+        schema:
+          type: integer
       - name: password
         in: query
         required: false

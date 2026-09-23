@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: AI model Models API
+  title: AI model Content Careers API
   version: wp/v2
-  summary: The public, read-only roster of AI model's generated AI models and AI talent, served by the WordPress REST API behind www.ai-model.jp.
+  summary: The public, read-only news, pages, media and recruitment content behind www.ai-model.jp.
   description: AI model株式会社 publishes no developer portal, no API reference and no API product.
   contact:
     name: AI model株式会社
@@ -19,16 +19,16 @@ servers:
 security:
 - {}
 tags:
-- name: Models
-  description: AI-generated models and AI talent published on www.ai-model.jp.
+- name: Careers
+  description: Recruitment / career information posts.
 paths:
-  /wp/v2/models:
+  /wp/v2/careerinfo:
     get:
-      operationId: listModels
-      summary: List AI models
-      description: 'List the published AI models / AI talent. Returned HTTP 200 anonymously with X-WP-Total: 8 on 2026-09-14.'
+      operationId: listCareerInfo
+      summary: List recruitment posts
+      description: 'List published recruitment / career information posts. Returned HTTP 200 anonymously with X-WP-Total: 0 on 2026-09-14 - the collection is registered and readable but currently empty.'
       tags:
-      - Models
+      - Careers
       security:
       - {}
       x-verified:
@@ -248,13 +248,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /wp/v2/models/{id}:
+  /wp/v2/careerinfo/{id}:
     get:
-      operationId: getModel
-      summary: Get one AI model
-      description: Retrieve a single AI model by its numeric WordPress post id.
+      operationId: getCareerInfo
+      summary: Get one recruitment post
+      description: Retrieve a single recruitment post by its numeric WordPress post id.
       tags:
-      - Models
+      - Careers
       security:
       - {}
       x-verified:

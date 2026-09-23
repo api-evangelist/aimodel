@@ -2,19 +2,8 @@ openapi: 3.2.0
 info:
   title: AI model Discovery API
   version: wp/v2
-  summary: 'Self-describing metadata for the public www.ai-model.jp WordPress REST API: registered content
-    types, taxonomies and post statuses.'
-  description: 'AI model株式会社 publishes no developer portal, no API reference and no API product. Its corporate
-    site www.ai-model.jp runs on WordPress and serves the standard WordPress REST API anonymously at https://www.ai-model.jp/wp-json/.
-    That surface is a real, machine-readable, unauthenticated read API over AI model content. Write methods
-    (POST/PUT/PATCH/DELETE) and the administrative namespaces (settings, plugins, themes, block-types,
-    wp-abilities, ithemes-security, redirection, yoast, smart-cf-api, contact-form-7) are deliberately
-    excluded: they exist on the host but returned 401/403 anonymously and are not a public API. This is
-    a content API - it is NOT an AI image-generation or AI-model-rendering API, which AI model sells as
-    a managed creative service with no public programmatic interface. This document covers the self-describing
-    discovery endpoints, which is how the rest of this profile was derived: /wp/v2/types enumerates the
-    registered content types (including the custom types models, news, careerinfo and notification), /wp/v2/taxonomies
-    the registered taxonomies, and /wp/v2/statuses the post statuses.'
+  summary: 'Self-describing metadata for the public www.ai-model.jp WordPress REST API: registered content types, taxonomies and post statuses.'
+  description: AI model株式会社 publishes no developer portal, no API reference and no API product.
   contact:
     name: AI model株式会社
     url: https://www.ai-model.jp/contact/
@@ -23,10 +12,7 @@ info:
     method: derived
     source: https://www.ai-model.jp/wp-json/
     derived: '2026-09-14'
-    note: Derived by API Evangelist from the live WordPress REST route discovery document served anonymously
-      at https://www.ai-model.jp/wp-json/ (saved verbatim as openapi/aimodel-content-wp-routes-original.json).
-      Every path, method, parameter and parameter schema comes from that document; every path was verified
-      to return HTTP 200 anonymously on 2026-09-14. Not published by AI model株式会社.
+    note: Derived by API Evangelist from the live WordPress REST route discovery document served anonymously at https://www.ai-model.jp/wp-json/ (saved verbatim as openapi/aimodel-content-wp-routes-original.json). Every path, method, parameter and parameter schema comes from that document; every path was verified to return HTTP 200 anonymously on 2026-09-14. Not published by AI model株式会社.
 servers:
 - url: https://www.ai-model.jp/wp-json
   description: Production
@@ -40,8 +26,7 @@ paths:
     get:
       operationId: listTypes
       summary: List content types
-      description: List the content types exposed anonymously by the public www.ai-model.jp WordPress
-        REST API.
+      description: List the content types exposed anonymously by the public www.ai-model.jp WordPress REST API.
       tags:
       - Discovery
       security:
@@ -135,8 +120,7 @@ paths:
     get:
       operationId: listTaxonomies
       summary: List taxonomies
-      description: List the taxonomies exposed anonymously by the public www.ai-model.jp WordPress REST
-        API.
+      description: List the taxonomies exposed anonymously by the public www.ai-model.jp WordPress REST API.
       tags:
       - Discovery
       security:
@@ -236,8 +220,7 @@ paths:
     get:
       operationId: listStatuses
       summary: List post statuses
-      description: List the post statuses exposed anonymously by the public www.ai-model.jp WordPress
-        REST API.
+      description: List the post statuses exposed anonymously by the public www.ai-model.jp WordPress REST API.
       tags:
       - Discovery
       security:

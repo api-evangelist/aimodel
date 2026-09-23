@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: AI model Models API
+  title: AI model Content Taxonomy API
   version: wp/v2
-  summary: The public, read-only roster of AI model's generated AI models and AI talent, served by the WordPress REST API behind www.ai-model.jp.
+  summary: The public, read-only news, pages, media and recruitment content behind www.ai-model.jp.
   description: AI model株式会社 publishes no developer portal, no API reference and no API product.
   contact:
     name: AI model株式会社
@@ -19,16 +19,16 @@ servers:
 security:
 - {}
 tags:
-- name: Models
-  description: AI-generated models and AI talent published on www.ai-model.jp.
+- name: Taxonomy
+  description: Categories and tags applied to content.
 paths:
-  /wp/v2/models:
+  /wp/v2/categories:
     get:
-      operationId: listModels
-      summary: List AI models
-      description: 'List the published AI models / AI talent. Returned HTTP 200 anonymously with X-WP-Total: 8 on 2026-09-14.'
+      operationId: listCategories
+      summary: List categories
+      description: 'List content categories. Returned HTTP 200 anonymously with X-WP-Total: 1 on 2026-09-14.'
       tags:
-      - Models
+      - Taxonomy
       security:
       - {}
       x-verified:
@@ -70,34 +70,6 @@ paths:
         description: 文字列に一致するものに結果を限定します。
         schema:
           type: string
-      - name: after
-        in: query
-        required: false
-        description: 入力された ISO8601 準拠の日付より後に公開された投稿にレスポンスを限定します。
-        schema:
-          type: string
-          format: date-time
-      - name: modified_after
-        in: query
-        required: false
-        description: 入力された ISO8601 準拠の日付より後に更新された投稿にレスポンスを限定します。
-        schema:
-          type: string
-          format: date-time
-      - name: before
-        in: query
-        required: false
-        description: 入力された ISO8601 準拠の日付より前に公開された投稿にレスポンスを限定します。
-        schema:
-          type: string
-          format: date-time
-      - name: modified_before
-        in: query
-        required: false
-        description: 入力された ISO8601 準拠の日付より前に更新された投稿にレスポンスを限定します。
-        schema:
-          type: string
-          format: date-time
       - name: exclude
         in: query
         required: false
@@ -120,20 +92,6 @@ paths:
           default: []
           items:
             type: integer
-      - name: search_semantics
-        in: query
-        required: false
-        description: 検索入力を解釈する方法です。
-        schema:
-          type: string
-          enum:
-          - exact
-      - name: offset
-        in: query
-        required: false
-        description: 特定の項目数で結果をオフセットします。
-        schema:
-          type: integer
       - name: order
         in: query
         required: false
@@ -143,76 +101,52 @@ paths:
           enum:
           - asc
           - desc
-          default: desc
+          default: asc
       - name: orderby
         in: query
         required: false
-        description: 投稿の属性でコレクションを並べ替えます。
+        description: タームの属性でコレクションを並べ替えます。
         schema:
           type: string
           enum:
-          - author
-          - date
           - id
           - include
-          - modified
-          - parent
-          - relevance
+          - name
           - slug
           - include_slugs
-          - title
-          default: date
-      - name: search_columns
+          - term_group
+          - description
+          - count
+          default: name
+      - name: hide_empty
         in: query
         required: false
-        description: 検索する列名の配列。
-        style: form
-        explode: false
+        description: どの投稿にも割り当てられていないタームを非表示にするかどうか。
         schema:
-          type: array
-          default: []
-          items:
-            enum:
-            - post_title
-            - post_content
-            - post_excerpt
-            type: string
+          type: boolean
+          default: false
+      - name: parent
+        in: query
+        required: false
+        description: 特定の親に割り当てられたタームに結果を限定します。
+        schema:
+          type: integer
+      - name: post
+        in: query
+        required: false
+        description: 特定の投稿に割り当てられたタームに結果を限定します。
+        schema:
+          type: integer
+          default: null
       - name: slug
         in: query
         required: false
-        description: 一つ以上の特定のスラッグを持つ投稿に結果を限定します。
+        description: 一つ以上の特定のスラッグを持つタームに結果を限定します。
         style: form
         explode: false
         schema:
           type: array
           items:
-            type: string
-      - name: status
-        in: query
-        required: false
-        description: 一つ以上のステータスが割り当てられた投稿に結果を限定します。
-        style: form
-        explode: false
-        schema:
-          type: array
-          default:
-          - publish
-          items:
-            enum:
-            - publish
-            - future
-            - draft
-            - pending
-            - private
-            - trash
-            - auto-draft
-            - inherit
-            - request-pending
-            - request-confirmed
-            - request-failed
-            - request-completed
-            - acf-disabled
-            - any
             type: string
       responses:
         '200':
@@ -248,13 +182,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /wp/v2/models/{id}:
+  /wp/v2/categories/{id}:
     get:
-      operationId: getModel
-      summary: Get one AI model
-      description: Retrieve a single AI model by its numeric WordPress post id.
+      operationId: getCategory
+      summary: Get one category
+      description: Retrieve a single category by its numeric term id.
       tags:
-      - Models
+      - Taxonomy
       security:
       - {}
       x-verified:
@@ -267,7 +201,7 @@ paths:
         required: true
         schema:
           type: integer
-        description: 投稿の一意識別子。
+        description: タームの一意識別子。
       - name: context
         in: query
         required: false
@@ -279,12 +213,6 @@ paths:
           - embed
           - edit
           default: view
-      - name: password
-        in: query
-        required: false
-        description: パスワードで保護されている場合の投稿のパスワード。
-        schema:
-          type: string
       responses:
         '200':
           description: Successful response.

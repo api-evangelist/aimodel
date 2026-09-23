@@ -1,0 +1,38 @@
+{
+  "provider": "aimodel",
+  "sources": [
+    "_original/aimodel-content-api-openapi.yml",
+    "aimodel-discovery-api-openapi.yml",
+    "aimodel-models-api-openapi.yml"
+  ],
+  "outputs": [
+    "aimodel-careers-api-openapi.yml",
+    "aimodel-media-api-openapi.yml",
+    "aimodel-news-api-openapi.yml",
+    "aimodel-notifications-api-openapi.yml",
+    "aimodel-pages-api-openapi.yml",
+    "aimodel-search-api-openapi.yml",
+    "aimodel-taxonomy-api-openapi.yml",
+    "aimodel-discovery-api-openapi.yml",
+    "aimodel-models-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [
+    "aimodel-discovery-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. /wp/v2/statuses get, /wp/v2/statuses/{status} get, /wp/v2/taxonomies get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "aimodel-models-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/models get, /wp/v2/models/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "aimodel-careers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aimodel-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aimodel-news-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aimodel-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aimodel-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aimodel-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "aimodel-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

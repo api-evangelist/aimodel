@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: AI model Models API
+  title: AI model Content Media API
   version: wp/v2
-  summary: The public, read-only roster of AI model's generated AI models and AI talent, served by the WordPress REST API behind www.ai-model.jp.
+  summary: The public, read-only news, pages, media and recruitment content behind www.ai-model.jp.
   description: AI model株式会社 publishes no developer portal, no API reference and no API product.
   contact:
     name: AI model株式会社
@@ -19,16 +19,16 @@ servers:
 security:
 - {}
 tags:
-- name: Models
-  description: AI-generated models and AI talent published on www.ai-model.jp.
+- name: Media
+  description: Images and files in the media library.
 paths:
-  /wp/v2/models:
+  /wp/v2/media:
     get:
-      operationId: listModels
-      summary: List AI models
-      description: 'List the published AI models / AI talent. Returned HTTP 200 anonymously with X-WP-Total: 8 on 2026-09-14.'
+      operationId: listMedia
+      summary: List media
+      description: 'List media library attachments. Returned HTTP 200 anonymously with X-WP-Total: 83 on 2026-09-14.'
       tags:
-      - Models
+      - Media
       security:
       - {}
       x-verified:
@@ -84,6 +84,28 @@ paths:
         schema:
           type: string
           format: date-time
+      - name: author
+        in: query
+        required: false
+        description: 特定の投稿者に割り当てられた投稿に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: author_exclude
+        in: query
+        required: false
+        description: 特定の投稿者が割り当てられた投稿を結果から除外します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
       - name: before
         in: query
         required: false
@@ -162,6 +184,28 @@ paths:
           - include_slugs
           - title
           default: date
+      - name: parent
+        in: query
+        required: false
+        description: 特定の親 ID に属する項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: parent_exclude
+        in: query
+        required: false
+        description: 特定の親 ID に属さない項目に結果を限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
       - name: search_columns
         in: query
         required: false
@@ -196,23 +240,42 @@ paths:
         schema:
           type: array
           default:
-          - publish
+          - inherit
           items:
             enum:
-            - publish
-            - future
-            - draft
-            - pending
+            - inherit
             - private
             - trash
-            - auto-draft
-            - inherit
-            - request-pending
-            - request-confirmed
-            - request-failed
-            - request-completed
-            - acf-disabled
-            - any
+            type: string
+      - name: media_type
+        in: query
+        required: false
+        description: 特定のメディアタイプの添付ファイルに結果セットを限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - null
+          items:
+            type: string
+            enum:
+            - image
+            - video
+            - text
+            - application
+            - audio
+      - name: mime_type
+        in: query
+        required: false
+        description: 特定の MIME タイプの添付ファイルに結果セットを限定します。
+        style: form
+        explode: false
+        schema:
+          type: array
+          default:
+          - null
+          items:
             type: string
       responses:
         '200':
@@ -248,13 +311,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /wp/v2/models/{id}:
+  /wp/v2/media/{id}:
     get:
-      operationId: getModel
-      summary: Get one AI model
-      description: Retrieve a single AI model by its numeric WordPress post id.
+      operationId: getMedia
+      summary: Get one media item
+      description: Retrieve a single media attachment by its numeric WordPress post id.
       tags:
-      - Models
+      - Media
       security:
       - {}
       x-verified:
@@ -279,12 +342,6 @@ paths:
           - embed
           - edit
           default: view
-      - name: password
-        in: query
-        required: false
-        description: パスワードで保護されている場合の投稿のパスワード。
-        schema:
-          type: string
       responses:
         '200':
           description: Successful response.

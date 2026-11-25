@@ -86,24 +86,30 @@ Model Context Protocol servers that expose the API to agents.
 
 - [aimodel-mcp.yml](https://apis.io/servers/aimodel/aimodel-mcp-yml/)
 
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [AI model API Rules](https://apis.io/rules/aimodel/aimodel-rules/)
+
 #### Security (2)
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Aimodel Authentication](https://apis.io/security/aimodel/aimodel-authentication/)
-- [Aimodel Domain Security](https://apis.io/security/aimodel/aimodel-domain-security/)
+- [AI model Authentication](https://apis.io/security/aimodel/aimodel-authentication/)
+- [AI model Domain Security](https://apis.io/security/aimodel/aimodel-domain-security/)
 
 #### Plans and pricing (1)
 
 Published plans, tiers and prices.
 
-- [Aimodel Plans Pricing](https://apis.io/plans/aimodel/aimodel-plans-pricing/)
+- [AI model Plans Pricing](https://apis.io/plans/aimodel/aimodel-plans-pricing/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Aimodel Rate Limits](https://apis.io/rate-limits/aimodel/aimodel-rate-limits/)
+- [AI model Rate Limits](https://apis.io/rate-limits/aimodel/aimodel-rate-limits/)
 
 ## Where to find this API
 
@@ -115,18 +121,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 20.3** — emerging · rubric 0.24.0 · scored 2026-10-17
+**Kin Score 21.1** — emerging · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 64.3 |
 | Contract quality | 24.0 |
-| Contract governance | 18.2 |
+| Contract governance | 31.8 |
 | Operational transparency | 0.0 |
 | Developer ergonomics | 30.4 |
 | Access clarity | 0.0 |
 
-**Agent readiness 21.8** — agent-aware
+**Agent readiness 21.3** — agent-aware
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -149,8 +155,14 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Protected Resource Metadata | — |
 | Dynamic Client Registration | — |
 | Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
-**Regulatory alignment 15.5** — AI & Biometrics
+**Regulatory alignment 10.0** — AI & Biometrics
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/aimodel/](https://apis.io/providers/aimodel/).
 
